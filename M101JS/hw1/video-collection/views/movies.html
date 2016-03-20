@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Movies</title>
+	<style type="text/css">
+	body {
+		font-family: 'Helvetica', 'Arial', sans-serif;
+	}
+	</style>
+</head>
+<body>
+	<h1>Movies</h1>
+
+	<a href="/add_movie">Add a movie</a>
+
+	<ul>
+	{% for movie in movies %}
+		<li class="movie-item">
+			<a target="_blank" href="http://www.imdb.com/title/{{ movie.imdb }}">
+			<span class="movie-title">{{ movie.title }}</span>
+			<span class="movie-year">{{ movie.year }}</span>
+			</a>
+		</li>
+	{% else %}
+		<li class="movie-item">No movies found.</li>
+	{% endfor %}
+	</ul>
+</body>
+</html>

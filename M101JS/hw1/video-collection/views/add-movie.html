@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Add movie</title>
+</head>
+<body>
+<form accept="/add_movie" method="POST">
+	<h1>Add movie</h1>
+	<input name="title" type="text" placeholder="Title" pattern=".+"></input>
+	<input name="year" type="text" placeholder="Year" pattern="19\d\d|20\d\d"></input>
+	<input name="imdb" type="text" placeholder="ImDB" pattern="tt\d\d\d\d\d\d"></input>
+	<input type="submit" value="Submit"></input>
+</form>
+</body>
+</html>
