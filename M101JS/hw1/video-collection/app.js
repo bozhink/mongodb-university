@@ -9,6 +9,8 @@ app.engine('html', engines.nunjucks);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/bower_components',  express.static(__dirname + '/bower_components'));
+app.use('/css',  express.static(__dirname + '/css'));
 
 function errorHandler(err, request, response, next) {
 	console.error(err.message);

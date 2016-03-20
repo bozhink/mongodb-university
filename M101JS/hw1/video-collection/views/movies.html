@@ -2,20 +2,24 @@
 <html>
 <head>
 	<title>Movies</title>
-	<style type="text/css">
-	body {
-		font-family: 'Helvetica', 'Arial', sans-serif;
-	}
-	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/css/movies.css">
+	<script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
 </head>
 <body>
+	<header>
 	<h1>Movies</h1>
 
-	<a href="/add_movie">Add a movie</a>
-
-	<ul>
+	<div>
+		<a href="/add_movie" class="btn btn-default" role="button">Add a movie</a>
+	</div>
+	<hr />
+	</header>
+	<section>
+	<ul class="list-group">
 	{% for movie in movies %}
-		<li class="movie-item">
+		<li class="movie-item list-group-item">
 			<a target="_blank" href="http://www.imdb.com/title/{{ movie.imdb }}">
 			<span class="movie-title">{{ movie.title }}</span>
 			<span class="movie-year">{{ movie.year }}</span>
@@ -25,5 +29,6 @@
 		<li class="movie-item">No movies found.</li>
 	{% endfor %}
 	</ul>
+	</section>
 </body>
 </html>

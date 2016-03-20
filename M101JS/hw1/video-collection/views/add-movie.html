@@ -2,14 +2,19 @@
 <html>
 <head>
 	<title>Add movie</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/css/add-movie.css">
 </head>
 <body>
 <form accept="/add_movie" method="POST">
 	<h1>Add movie</h1>
-	<input name="title" type="text" placeholder="Title" pattern=".+"></input>
-	<input name="year" type="text" placeholder="Year" pattern="19\d\d|20\d\d"></input>
-	<input name="imdb" type="text" placeholder="ImDB" pattern="tt\d\d\d\d\d\d"></input>
-	<input type="submit" value="Submit"></input>
+	<div class="container-fluid">
+		<input id="title" type="text" placeholder="Title" pattern=".+" class="form-control"></input>
+		<input id="year" type="text" placeholder="Year" pattern="19\d\d|20\d\d" class="form-control"></input>
+		<input id="imdb" type="text" placeholder="ImDB" pattern="tt\d\d\d\d\d\d" class="form-control"></input>
+		<input type="submit" value="Submit" class="btn btn-default"></input>
+	</div>
 </form>
 </body>
 </html>

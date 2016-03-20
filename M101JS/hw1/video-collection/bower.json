@@ -1,0 +1,29 @@
+{
+  "name": "video-collection",
+  "description": "Simple video collection managment system",
+  "main": "app.js",
+  "authors": [
+    "Bozhin Karaivanov"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "MongoDB",
+    "nodejs",
+    "video",
+    "collection"
+  ],
+  "homepage": "https://github.com/bozhink/mongodb-university",
+  "moduleType": [
+    "es6"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
