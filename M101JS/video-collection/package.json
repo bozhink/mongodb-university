@@ -1,0 +1,23 @@
+{
+  "name": "video-collection",
+  "version": "0.0.0",
+  "description": "Simple video collection with MongoDB",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "video",
+    "collection",
+    "ExpressJS",
+    "MongoDB"
+  ],
+  "author": "Bozhin Karaivanov",
+  "license": "MIT",
+  "dependencies": {
+    "consolidate": "^0.14.0",
+    "express": "^4.13.4",
+    "mongodb": "^2.1.7",
+    "nunjucks": "^2.4.1"
+  }
+}
