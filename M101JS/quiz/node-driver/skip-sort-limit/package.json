@@ -1,0 +1,22 @@
+{
+  "name": "skip-sort-limit",
+  "version": "0.0.0",
+  "description": "Sort, Skip, and Limit in the Node.js Driver / Week 3 /",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "NodeJS",
+    "MongoDB",
+    "skip",
+    "sort",
+    "limit",
+    "query"
+  ],
+  "author": "Bozhin Karaivanov",
+  "license": "MIT",
+  "dependencies": {
+    "mongodb": "^2.1.14"
+  }
+}
