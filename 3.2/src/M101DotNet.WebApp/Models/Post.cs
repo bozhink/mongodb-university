@@ -9,8 +9,29 @@ namespace M101DotNet.WebApp.Models
 {
     public class Post
     {
+        public Post()
+        {
+            this.Tags = new HashSet<string>();
+            this.Comments = new HashSet<Comment>();
+        }
+
         // XXX WORK HERE
         // add in the appropriate properties for a post
         // The homework instructions contain the schema.
+
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+
+        public string Author { get; set; }
+
+        public string Title { get; set; }
+
+        public string Content { get; set; }
+
+        public ICollection<string> Tags { get; set; }
+
+        public DateTime CreatedAtUtc { get; set; }
+
+        public ICollection<Comment> Comments { get; set; }
     }
 }
