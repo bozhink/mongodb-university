@@ -1,16 +1,14 @@
-﻿
+﻿/// <summary>
+/// M101 HW 2.1
+/// </summary>
 namespace GradesCleaner
 {
-    using MongoDB.Bson;
-    using MongoDB.Bson.IO;
-    using MongoDB.Bson.Serialization;
-    using MongoDB.Driver;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Text;
     using System.Threading.Tasks;
+    using MongoDB.Bson;
+    using MongoDB.Driver;
 
     public class Program
     {
@@ -43,7 +41,6 @@ namespace GradesCleaner
 
             foreach (var item in itemsToDelete)
             {
-
                 Expression<Func<Student, bool>> filter = s => s.Id == item.Id;
 
                 (await collection.Find(filter).ToListAsync()).ForEach(Console.WriteLine);
