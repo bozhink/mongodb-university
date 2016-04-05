@@ -111,7 +111,7 @@ function queryDocument(options) {
     console.log(options);
     
     var query = {
-        "tag_list": /* TODO: Complete this statement to match the regular expression "social-networking" */        
+        "tag_list": { "$regex": "social-networking" }/* TODO: Complete this statement to match the regular expression "social-networking" */
     };
     
     if (("firstYear" in options) && ("lastYear" in options)) {
@@ -120,10 +120,19 @@ function queryDocument(options) {
            appear in the options object, we will match documents that have a value for 
            the "founded_year" field of companies documents in the correct range. 
         */
+        query.founded_year = {
+            "$exists": true,
+            "$gte": options.firstYear,
+            "$lte": options.lastYear
+        };
     } else if ("firstYear" in options) {
-        query.founded_year = { "$gte": options.firstYear };
+        query.founded_year = {
+            "$gte": options.firstYear
+        };
     } else if ("lastYear" in options) {
-        query.founded_year = { "$lte": options.lastYear };
+        query.founded_year = {
+            "$lte": options.lastYear
+        };
     }
     
     if ("city" in options) {
@@ -133,6 +142,7 @@ function queryDocument(options) {
            is a nested document containing fields that describe a corporate office. Each office
            document contains a "city" field. A company may have multiple corporate offices. 
         */
+        query["offices.city"] = options.city;
     }
     
     return query;
