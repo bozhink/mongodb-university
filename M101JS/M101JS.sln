@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "M101JS", "M101JS\M101JS.njsproj", "{4B4B7336-23D3-4BB3-B671-5A33BB9311D2}"
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "BuildingQueryDocuments", "M101JS\BuildingQueryDocuments.njsproj", "{4B4B7336-23D3-4BB3-B671-5A33BB9311D2}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "OverviewOrTags", "OverviewOrTags\OverviewOrTags.njsproj", "{89366784-3664-47F1-8042-50836FE07F31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{4B4B7336-23D3-4BB3-B671-5A33BB9311D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B4B7336-23D3-4BB3-B671-5A33BB9311D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B4B7336-23D3-4BB3-B671-5A33BB9311D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89366784-3664-47F1-8042-50836FE07F31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89366784-3664-47F1-8042-50836FE07F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89366784-3664-47F1-8042-50836FE07F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89366784-3664-47F1-8042-50836FE07F31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
