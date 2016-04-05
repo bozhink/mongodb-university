@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using MongoDB.Driver;
-using M101DotNet.WebApp.Models;
-using M101DotNet.WebApp.Models.Account;
-
-namespace M101DotNet.WebApp.Controllers
+﻿namespace M101DotNet.WebApp.Controllers
 {
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Web.Mvc;
+
+    using M101DotNet.WebApp.Models;
+    using M101DotNet.WebApp.Models.Account;
+
+    using MongoDB.Driver;
     [AllowAnonymous]
     public class AccountController : Controller
     {
@@ -22,7 +20,7 @@ namespace M101DotNet.WebApp.Controllers
                 ReturnUrl = returnUrl
             };
 
-            return View(model);
+            return this.View(model);
         }
 
         [HttpPost]
@@ -30,7 +28,7 @@ namespace M101DotNet.WebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return this.View(model);
             }
 
             var blogContext = new BlogContext();
@@ -41,10 +39,11 @@ namespace M101DotNet.WebApp.Controllers
             if (user == null)
             {
                 ModelState.AddModelError("Email", "Email address has not been registered.");
-                return View(model);
+                return this.View(model);
             }
 
-            var identity = new ClaimsIdentity(new[]
+            var identity = new ClaimsIdentity(
+                new[]
                 {
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Email, user.Email)
@@ -56,7 +55,7 @@ namespace M101DotNet.WebApp.Controllers
 
             authManager.SignIn(identity);
 
-            return Redirect(GetRedirectUrl(model.ReturnUrl));
+            return this.Redirect(this.GetRedirectUrl(model.ReturnUrl));
         }
 
         [HttpPost]
@@ -66,13 +65,13 @@ namespace M101DotNet.WebApp.Controllers
             var authManager = context.Authentication;
 
             authManager.SignOut("ApplicationCookie");
-            return RedirectToAction("Index", "Home");
+            return this.RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public ActionResult Register()
         {
-            return View(new RegisterModel());
+            return this.View(new RegisterModel());
         }
 
         [HttpPost]
@@ -80,7 +79,7 @@ namespace M101DotNet.WebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return this.View(model);
             }
 
             var blogContext = new BlogContext();
@@ -90,7 +89,7 @@ namespace M101DotNet.WebApp.Controllers
                 Email = model.Email
             });
 
-            return RedirectToAction("Index", "Home");
+            return this.RedirectToAction("Index", "Home");
         }
 
         private string GetRedirectUrl(string returnUrl)
