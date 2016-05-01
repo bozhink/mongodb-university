@@ -1,15 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System.Threading.Tasks;
 
-namespace M101N_Exam_Q8
+namespace M101DotNet
 {
-    class Program
+    internal class InsertTest
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            MainAsync(args).GetAwaiter().GetResult();
+        }
+
+        private static async Task MainAsync(string[] args)
+        {
+            var client = new MongoClient();
+            var db = client.GetDatabase("test");
+
+            var animals = db.GetCollection<BsonDocument>("animals");
+
+            var animal = new BsonDocument
+                            {
+                            {"animal", "monkey"}
+                            };
+
+            await animals.InsertOneAsync(animal);
+
+            animal.Remove("animal");
+            animal.Add("animal", "cat");
+
+            await animals.InsertOneAsync(animal);
+
+            animal.Remove("animal");
+            animal.Add("animal", "lion");
+
+            await animals.InsertOneAsync(animal);
         }
     }
 }
