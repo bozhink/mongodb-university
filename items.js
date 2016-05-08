@@ -14,9 +14,11 @@
   limitations under the License.
 */
 
+;
 
 var MongoClient = require('mongodb').MongoClient,
-    assert = require('assert');
+    assert = require('assert'),
+    ALL_CATEGORY_NAME = 'All';
 
 
 function ItemDAO(database) {
@@ -67,13 +69,11 @@ function ItemDAO(database) {
         }]).toArray(function (err, docs) {
             var i, len, categories = [],
                 category = {
-                    _id: "All",
+                    _id: ALL_CATEGORY_NAME,
                     num: 0
                 };
                 
-            if (err !== null) {
-                throw err;
-            }
+            assert.equal(null, err);
             
             for (i = 0, len = docs.length; i < len; i += 1) {
                 category.num += docs[i].num;
@@ -128,19 +128,34 @@ function ItemDAO(database) {
          * than you do for other categories.
          *
          */
-
-        var pageItem = this.createDummyItem();
-        var pageItems = [];
-        for (var i = 0; i < 5; i++) {
-            pageItems.push(pageItem);
+        
+        var cursor = null;
+        if (category === ALL_CATEGORY_NAME) {
+            cursor = this.itemsCollection.find({}); 
+        } else {
+            cursor = this.itemsCollection.find({ category: category }); 
         }
+        
+        cursor.sort({ _id: 1 })
+            .skip(page*itemsPerPage)
+            .limit(itemsPerPage)
+            .toArray(function (err, docs) {
+                assert.equal(null, err);
+                callback(docs);
+            });
 
-        // TODO-lab1B Replace all code above (in this method).
+        // // var pageItem = this.createDummyItem();
+        // // var pageItems = [];
+        // // for (var i = 0; i < 5; i++) {
+        // //     pageItems.push(pageItem);
+        // // }
 
-        // TODO Include the following line in the appropriate
-        // place within your code to pass the items for the selected page
-        // to the callback.
-        callback(pageItems);
+        // // // TODO-lab1B Replace all code above (in this method).
+
+        // // // TODO Include the following line in the appropriate
+        // // // place within your code to pass the items for the selected page
+        // // // to the callback.
+        // // callback(pageItems);
     }
 
 
