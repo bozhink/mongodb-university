@@ -14,12 +14,9 @@
   limitations under the License.
 */
 
-;
-
 var MongoClient = require('mongodb').MongoClient,
     assert = require('assert'),
     ALL_CATEGORY_NAME = 'All';
-
 
 function ItemDAO(database) {
     "use strict";
@@ -54,7 +51,6 @@ function ItemDAO(database) {
          * to the callback.
          *
          */
-
         this.itemsCollection.aggregate([{
             $group: {
                 _id: '$category',
@@ -66,41 +62,26 @@ function ItemDAO(database) {
             $sort: {
                 _id: 1
             }
-        }]).toArray(function (err, docs) {
+        }]).toArray(function(err, docs) {
             var i, len, categories = [],
                 category = {
                     _id: ALL_CATEGORY_NAME,
                     num: 0
                 };
-                
+
             assert.equal(null, err);
-            
+
             for (i = 0, len = docs.length; i < len; i += 1) {
                 category.num += docs[i].num;
             }
-            
+
             categories.push(category);
             for (i = 0, len = docs.length; i < len; i += 1) {
                 categories.push(docs[i]);
             }
-            
+
             callback(categories);
         });
-
-        // // // var categories = [];
-        // // // var category = {
-        // // //     _id: "All",
-        // // //     num: 9999
-        // // // };
-
-        // // // categories.push(category)
-
-        // // // // TODO-lab1A Replace all code above (in this method).
-
-        // // // // TODO Include the following line in the appropriate
-        // // // // place within your code to pass the categories array to the
-        // // // // callback.
-        // // // callback(categories);
     }
 
 
@@ -128,41 +109,29 @@ function ItemDAO(database) {
          * than you do for other categories.
          *
          */
-        
         var cursor = null;
         if (category === ALL_CATEGORY_NAME) {
-            cursor = this.itemsCollection.find({}); 
+            cursor = this.itemsCollection.find({});
         } else {
-            cursor = this.itemsCollection.find({ category: category }); 
+            cursor = this.itemsCollection.find({
+                category: category
+            });
         }
-        
-        cursor.sort({ _id: 1 })
-            .skip(page*itemsPerPage)
+
+        cursor.sort({
+                _id: 1
+            })
+            .skip(page * itemsPerPage)
             .limit(itemsPerPage)
-            .toArray(function (err, docs) {
+            .toArray(function(err, docs) {
                 assert.equal(null, err);
                 callback(docs);
             });
-
-        // // var pageItem = this.createDummyItem();
-        // // var pageItems = [];
-        // // for (var i = 0; i < 5; i++) {
-        // //     pageItems.push(pageItem);
-        // // }
-
-        // // // TODO-lab1B Replace all code above (in this method).
-
-        // // // TODO Include the following line in the appropriate
-        // // // place within your code to pass the items for the selected page
-        // // // to the callback.
-        // // callback(pageItems);
     }
 
 
     this.getNumItems = function(category, callback) {
         "use strict";
-
-        // // var numItems = 0;
 
         /*
          * TODO-lab1C:
@@ -178,22 +147,19 @@ function ItemDAO(database) {
          * of a call to the getNumItems() method.
          *
          */
-        
         var cursor = null;
         if (category === ALL_CATEGORY_NAME) {
-            cursor = this.itemsCollection.find({}); 
+            cursor = this.itemsCollection.find({});
         } else {
-            cursor = this.itemsCollection.find({ category: category }); 
+            cursor = this.itemsCollection.find({
+                category: category
+            });
         }
-        
-        cursor.count(function (err, count) {
+
+        cursor.count(function(err, count) {
             assert.equal(null, err);
             callback(count);
-        })
-
-        // // // TODO Include the following line in the appropriate
-        // // // place within your code to pass the count to the callback.
-        // // callback(numItems);
+        });
     }
 
 
