@@ -200,26 +200,11 @@ function ItemDAO(database) {
             assert.equal(null, err);
             callback(docs);
         });
-
-        // var item = this.createDummyItem();
-        // var items = [];
-        // for (var i = 0; i < 5; i++) {
-        //     items.push(item);
-        // }
-
-        // // TODO-lab2A Replace all code above (in this method).
-
-        // // TODO Include the following line in the appropriate
-        // // place within your code to pass the items for the selected page
-        // // of search results to the callback.
-        // callback(items);
     }
 
 
     this.getNumSearchItems = function(query, callback) {
         "use strict";
-
-        // var numItems = 0;
 
         /*
          * TODO-lab2B
@@ -241,8 +226,6 @@ function ItemDAO(database) {
             assert.equal(null, err);
             callback(numItems);
         });
-
-        // callback(numItems);
     }
 
 
