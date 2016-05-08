@@ -241,29 +241,31 @@ function ItemDAO(database) {
          * _id and pass the matching item to the callback function.
          *
          */
+        this.itemsCollection.findOne({_id: itemId}, function (err, doc) {
+            assert.equal(null, err);
+            callback(doc);
+        });
 
-        var item = this.createDummyItem();
+        // var item = this.createDummyItem();
 
-        // TODO-lab3 Replace all code above (in this method).
+        // // TODO-lab3 Replace all code above (in this method).
 
-        // TODO Include the following line in the appropriate
-        // place within your code to pass the matching item
-        // to the callback.
-        callback(item);
+        // // TODO Include the following line in the appropriate
+        // // place within your code to pass the matching item
+        // // to the callback.
+        // callback(item);
     }
-
 
     this.getRelatedItems = function(callback) {
         "use strict";
 
-        this.db.collection("item").find({})
+        this.itemsCollection.find({})
             .limit(4)
             .toArray(function(err, relatedItems) {
                 assert.equal(null, err);
                 callback(relatedItems);
             });
     };
-
 
     this.addReview = function(itemId, comment, name, stars, callback) {
         "use strict";
@@ -279,23 +281,34 @@ function ItemDAO(database) {
          * "name", "comment", "stars", and "date".
          *
          */
-
         var reviewDoc = {
             name: name,
             comment: comment,
             stars: stars,
             date: Date.now()
-        }
+        };
 
-        // TODO replace the following two lines with your code that will
-        // update the document with a new review.
-        var doc = this.createDummyItem();
-        doc.reviews = [reviewDoc];
+        this.itemsCollection.updateOne({
+            _id: itemId
+        }, {
+            $push: {
+                reviews: reviewDoc
+            }
+        }, function (err, doc) {
+            assert.equal(null, err);
+            callback(doc);
+        });
 
-        // TODO Include the following line in the appropriate
-        // place within your code to pass the updated doc to the
-        // callback.
-        callback(doc);
+
+        // // TODO replace the following two lines with your code that will
+        // // update the document with a new review.
+        // var doc = this.createDummyItem();
+        // doc.reviews = [reviewDoc];
+
+        // // TODO Include the following line in the appropriate
+        // // place within your code to pass the updated doc to the
+        // // callback.
+        // callback(doc);
     }
 
 
