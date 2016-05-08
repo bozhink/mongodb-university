@@ -23,49 +23,84 @@ function ItemDAO(database) {
     "use strict";
 
     this.db = database;
+    this.itemsCollection = this.db.collection('item');
 
     this.getCategories = function(callback) {
         "use strict";
 
         /*
-        * TODO-lab1A
-        *
-        * LAB #1A: Implement the getCategories() method.
-        *
-        * Write an aggregation query on the "item" collection to return the
-        * total number of items in each category. The documents in the array
-        * output by your aggregation should contain fields for "_id" and "num".
-        *
-        * HINT: Test your mongodb query in the shell first before implementing
-        * it in JavaScript.
-        *
-        * In addition to the categories created by your aggregation query,
-        * include a document for category "All" in the array of categories
-        * passed to the callback. The "All" category should contain the total
-        * number of items across all categories as its value for "num". The
-        * most efficient way to calculate this value is to iterate through
-        * the array of categories produced by your aggregation query, summing
-        * counts of items in each category.
-        *
-        * Ensure categories are organized in alphabetical order before passing
-        * to the callback.
-        *
-        */
+         * TODO-lab1A
+         *
+         * LAB #1A: Implement the getCategories() method.
+         *
+         * Write an aggregation query on the "item" collection to return the
+         * total number of items in each category. The documents in the array
+         * output by your aggregation should contain fields for "_id" and "num".
+         *
+         * HINT: Test your mongodb query in the shell first before implementing
+         * it in JavaScript.
+         *
+         * In addition to the categories created by your aggregation query,
+         * include a document for category "All" in the array of categories
+         * passed to the callback. The "All" category should contain the total
+         * number of items across all categories as its value for "num". The
+         * most efficient way to calculate this value is to iterate through
+         * the array of categories produced by your aggregation query, summing
+         * counts of items in each category.
+         *
+         * Ensure categories are organized in alphabetical order before passing
+         * to the callback.
+         *
+         */
 
-        var categories = [];
-        var category = {
-            _id: "All",
-            num: 9999
-        };
+        this.itemsCollection.aggregate([{
+            $group: {
+                _id: '$category',
+                num: {
+                    $sum: 1
+                }
+            }
+        }, {
+            $sort: {
+                _id: 1
+            }
+        }]).toArray(function (err, docs) {
+            var i, len, categories = [],
+                category = {
+                    _id: "All",
+                    num: 0
+                };
+                
+            if (err !== null) {
+                throw err;
+            }
+            
+            for (i = 0, len = docs.length; i < len; i += 1) {
+                category.num += docs[i].num;
+            }
+            
+            categories.push(category);
+            for (i = 0, len = docs.length; i < len; i += 1) {
+                categories.push(docs[i]);
+            }
+            
+            callback(categories);
+        });
 
-        categories.push(category)
+        // // // var categories = [];
+        // // // var category = {
+        // // //     _id: "All",
+        // // //     num: 9999
+        // // // };
 
-        // TODO-lab1A Replace all code above (in this method).
+        // // // categories.push(category)
 
-        // TODO Include the following line in the appropriate
-        // place within your code to pass the categories array to the
-        // callback.
-        callback(categories);
+        // // // // TODO-lab1A Replace all code above (in this method).
+
+        // // // // TODO Include the following line in the appropriate
+        // // // // place within your code to pass the categories array to the
+        // // // // callback.
+        // // // callback(categories);
     }
 
 
@@ -96,7 +131,7 @@ function ItemDAO(database) {
 
         var pageItem = this.createDummyItem();
         var pageItems = [];
-        for (var i=0; i<5; i++) {
+        for (var i = 0; i < 5; i++) {
             pageItems.push(pageItem);
         }
 
@@ -129,8 +164,8 @@ function ItemDAO(database) {
          *
          */
 
-         // TODO Include the following line in the appropriate
-         // place within your code to pass the count to the callback.
+        // TODO Include the following line in the appropriate
+        // place within your code to pass the count to the callback.
         callback(numItems);
     }
 
@@ -164,7 +199,7 @@ function ItemDAO(database) {
 
         var item = this.createDummyItem();
         var items = [];
-        for (var i=0; i<5; i++) {
+        for (var i = 0; i < 5; i++) {
             items.push(item);
         }
 
@@ -183,17 +218,17 @@ function ItemDAO(database) {
         var numItems = 0;
 
         /*
-        * TODO-lab2B
-        *
-        * LAB #2B: Using the value of the query parameter passed to this
-        * method, count the number of items in the "item" collection matching
-        * a text search. Pass the count to the callback function.
-        *
-        * getNumSearchItems() depends on the same text index as searchItems().
-        * Before implementing this method, ensure that you've already created
-        * a SINGLE text index on title, slogan, and description. You should
-        * simply do this in the mongo shell.
-        */
+         * TODO-lab2B
+         *
+         * LAB #2B: Using the value of the query parameter passed to this
+         * method, count the number of items in the "item" collection matching
+         * a text search. Pass the count to the callback function.
+         *
+         * getNumSearchItems() depends on the same text index as searchItems().
+         * Before implementing this method, ensure that you've already created
+         * a SINGLE text index on title, slogan, and description. You should
+         * simply do this in the mongo shell.
+         */
 
         callback(numItems);
     }
