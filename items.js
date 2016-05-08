@@ -84,7 +84,6 @@ function ItemDAO(database) {
         });
     }
 
-
     this.getItems = function(category, page, itemsPerPage, callback) {
         "use strict";
 
@@ -129,7 +128,6 @@ function ItemDAO(database) {
             });
     }
 
-
     this.getNumItems = function(category, callback) {
         "use strict";
 
@@ -162,7 +160,6 @@ function ItemDAO(database) {
         });
     }
 
-
     this.searchItems = function(query, page, itemsPerPage, callback) {
         "use strict";
 
@@ -190,18 +187,17 @@ function ItemDAO(database) {
          *
          */
         this.itemsCollection.find({
-            $text: {
-                $search: query
-            }
-        })
-        .skip(page * itemsPerPage)
-        .limit(itemsPerPage)
-        .toArray(function (err, docs) {
-            assert.equal(null, err);
-            callback(docs);
-        });
+                $text: {
+                    $search: query
+                }
+            })
+            .skip(page * itemsPerPage)
+            .limit(itemsPerPage)
+            .toArray(function(err, docs) {
+                assert.equal(null, err);
+                callback(docs);
+            });
     }
-
 
     this.getNumSearchItems = function(query, callback) {
         "use strict";
@@ -222,12 +218,11 @@ function ItemDAO(database) {
             $text: {
                 $search: query
             }
-        }, function (err, numItems) {
+        }, function(err, numItems) {
             assert.equal(null, err);
             callback(numItems);
         });
     }
-
 
     this.getItem = function(itemId, callback) {
         "use strict";
@@ -241,19 +236,12 @@ function ItemDAO(database) {
          * _id and pass the matching item to the callback function.
          *
          */
-        this.itemsCollection.findOne({_id: itemId}, function (err, doc) {
+        this.itemsCollection.findOne({
+            _id: itemId
+        }, function(err, doc) {
             assert.equal(null, err);
             callback(doc);
         });
-
-        // var item = this.createDummyItem();
-
-        // // TODO-lab3 Replace all code above (in this method).
-
-        // // TODO Include the following line in the appropriate
-        // // place within your code to pass the matching item
-        // // to the callback.
-        // callback(item);
     }
 
     this.getRelatedItems = function(callback) {
@@ -294,42 +282,11 @@ function ItemDAO(database) {
             $push: {
                 reviews: reviewDoc
             }
-        }, function (err, doc) {
+        }, function(err, doc) {
             assert.equal(null, err);
             callback(doc);
         });
-
-
-        // // TODO replace the following two lines with your code that will
-        // // update the document with a new review.
-        // var doc = this.createDummyItem();
-        // doc.reviews = [reviewDoc];
-
-        // // TODO Include the following line in the appropriate
-        // // place within your code to pass the updated doc to the
-        // // callback.
-        // callback(doc);
-    }
-
-
-    this.createDummyItem = function() {
-        "use strict";
-
-        var item = {
-            _id: 1,
-            title: "Gray Hooded Sweatshirt",
-            description: "The top hooded sweatshirt we offer",
-            slogan: "Made of 100% cotton",
-            stars: 0,
-            category: "Apparel",
-            img_url: "/img/products/hoodie.jpg",
-            price: 29.99,
-            reviews: []
-        };
-
-        return item;
     }
 }
-
 
 module.exports.ItemDAO = ItemDAO;
