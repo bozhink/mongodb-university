@@ -14,88 +14,77 @@
   limitations under the License.
 */
 
-
 var MongoClient = require('mongodb').MongoClient,
     assert = require('assert'),
-    ALL_CATEGORIES_NAME = 'All';
-
+    ALL_CATEGORY_NAME = 'All';
 
 function ItemDAO(database) {
     "use strict";
 
     this.db = database;
+    this.itemsCollection = this.db.collection('item');
 
     this.getCategories = function(callback) {
         "use strict";
 
         /*
-        * TODO-lab1A
-        *
-        * LAB #1A: Implement the getCategories() method.
-        *
-        * Write an aggregation query on the "item" collection to return the
-        * total number of items in each category. The documents in the array
-        * output by your aggregation should contain fields for "_id" and "num".
-        *
-        * HINT: Test your mongodb query in the shell first before implementing
-        * it in JavaScript.
-        *
-        * In addition to the categories created by your aggregation query,
-        * include a document for category "All" in the array of categories
-        * passed to the callback. The "All" category should contain the total
-        * number of items across all categories as its value for "num". The
-        * most efficient way to calculate this value is to iterate through
-        * the array of categories produced by your aggregation query, summing
-        * counts of items in each category.
-        *
-        * Ensure categories are organized in alphabetical order before passing
-        * to the callback.
-        *
-        */
-
-        var collection = this.db.collection('item'),
-            cursor = collection.aggregate(
-                [
-
-                    {
-                        '$group': {
-                            '_id': '$category',
-                            'num': { '$sum': 1 }
-                        }
-                    },
-                    {
-                        '$sort': { '_id': 1 }
-                    }
-                ],
-                {
-                    cursor: { batchSize: 1 }
-                });
-
-        cursor.toArray().then(function (docs) {
+         * TODO-lab1A
+         *
+         * LAB #1A: Implement the getCategories() method.
+         *
+         * Write an aggregation query on the "item" collection to return the
+         * total number of items in each category. The documents in the array
+         * output by your aggregation should contain fields for "_id" and "num".
+         *
+         * HINT: Test your mongodb query in the shell first before implementing
+         * it in JavaScript.
+         *
+         * In addition to the categories created by your aggregation query,
+         * include a document for category "All" in the array of categories
+         * passed to the callback. The "All" category should contain the total
+         * number of items across all categories as its value for "num". The
+         * most efficient way to calculate this value is to iterate through
+         * the array of categories produced by your aggregation query, summing
+         * counts of items in each category.
+         *
+         * Ensure categories are organized in alphabetical order before passing
+         * to the callback.
+         *
+         */
+        this.itemsCollection.aggregate([{
+            $group: {
+                _id: '$category',
+                num: {
+                    $sum: 1
+                }
+            }
+        }, {
+            $sort: {
+                _id: 1
+            }
+        }]).toArray(function(err, docs) {
             var i, len, categories = [],
                 category = {
-                    _id: ALL_CATEGORIES_NAME,
+                    _id: ALL_CATEGORY_NAME,
                     num: 0
                 };
 
-            categories.push(category);
+            assert.equal(null, err);
 
             for (i = 0, len = docs.length; i < len; i += 1) {
                 category.num += docs[i].num;
+            }
+
+            categories.push(category);
+            for (i = 0, len = docs.length; i < len; i += 1) {
                 categories.push(docs[i]);
             }
 
             callback(categories);
-
-        }).catch(function (err) {
-
-            console.error(err.stack);
-
         });
     }
 
-
-    this.getItems = function (category, page, itemsPerPage, callback) {
+    this.getItems = function(category, page, itemsPerPage, callback) {
         "use strict";
 
         /*
@@ -119,33 +108,27 @@ function ItemDAO(database) {
          * than you do for other categories.
          *
          */
-
-        var collection = this.db.collection('item'),
-            cursor;
-
-        if (category === ALL_CATEGORIES_NAME) {
-            cursor = collection.find({});
+        var cursor = null;
+        if (category === ALL_CATEGORY_NAME) {
+            cursor = this.itemsCollection.find({});
         } else {
-            cursor = collection.find({ 'category': category });
+            cursor = this.itemsCollection.find({
+                category: category
+            });
         }
 
-        cursor.sort({ '_id': 1 })
+        cursor.sort({
+                _id: 1
+            })
             .skip(page * itemsPerPage)
             .limit(itemsPerPage)
-            .toArray()
-            .then(function (docs) {
-
+            .toArray(function(err, docs) {
+                assert.equal(null, err);
                 callback(docs);
-
-            }).catch(function (err) {
-
-                console.error(err.stack);
-
             });
     }
 
-
-    this.getNumItems = function (category, callback) {
+    this.getNumItems = function(category, callback) {
         "use strict";
 
         /*
@@ -162,27 +145,20 @@ function ItemDAO(database) {
          * of a call to the getNumItems() method.
          *
          */
-
-        var collection = this.db.collection('item'),
-            cursor;
-
-        if (category === ALL_CATEGORIES_NAME) {
-            cursor = collection.count({});
+        var cursor = null;
+        if (category === ALL_CATEGORY_NAME) {
+            cursor = this.itemsCollection.find({});
         } else {
-            cursor = collection.count({ 'category': category });
+            cursor = this.itemsCollection.find({
+                category: category
+            });
         }
 
-        cursor.then(function (count) {
-
+        cursor.count(function(err, count) {
+            assert.equal(null, err);
             callback(count);
-
-        }).catch(function (err) {
-
-            console.error(err.stack);
-
         });
     }
-
 
     this.searchItems = function(query, page, itemsPerPage, callback) {
         "use strict";
@@ -210,62 +186,43 @@ function ItemDAO(database) {
          * description. You should simply do this in the mongo shell.
          *
          */
-
-        var collection = this.db.collection('item');
-
-        collection.find({
-            '$text': {
-                '$search': query,
-                '$caseSensitive': false,
-                '$diacriticSensitive': false
-            }
-        }).toArray().then(function (docs) {
-
-            callback(docs);
-
-        }).catch(function (err) {
-
-            console.error(err.stack);
-
-        });
+        this.itemsCollection.find({
+                $text: {
+                    $search: query
+                }
+            })
+            .skip(page * itemsPerPage)
+            .limit(itemsPerPage)
+            .toArray(function(err, docs) {
+                assert.equal(null, err);
+                callback(docs);
+            });
     }
-
 
     this.getNumSearchItems = function(query, callback) {
         "use strict";
 
         /*
-        * TODO-lab2B
-        *
-        * LAB #2B: Using the value of the query parameter passed to this
-        * method, count the number of items in the "item" collection matching
-        * a text search. Pass the count to the callback function.
-        *
-        * getNumSearchItems() depends on the same text index as searchItems().
-        * Before implementing this method, ensure that you've already created
-        * a SINGLE text index on title, slogan, and description. You should
-        * simply do this in the mongo shell.
-        */
-
-        var collection = this.db.collection('item');
-
-        collection.count({
-            '$text': {
-                '$search': query,
-                '$caseSensitive': false,
-                '$diacriticSensitive': false
+         * TODO-lab2B
+         *
+         * LAB #2B: Using the value of the query parameter passed to this
+         * method, count the number of items in the "item" collection matching
+         * a text search. Pass the count to the callback function.
+         *
+         * getNumSearchItems() depends on the same text index as searchItems().
+         * Before implementing this method, ensure that you've already created
+         * a SINGLE text index on title, slogan, and description. You should
+         * simply do this in the mongo shell.
+         */
+        this.itemsCollection.count({
+            $text: {
+                $search: query
             }
-        }).then(function (count) {
-
-            callback(count);
-
-        }).catch(function (err) {
-
-            console.error(err.stack);
-
+        }, function(err, numItems) {
+            assert.equal(null, err);
+            callback(numItems);
         });
     }
-
 
     this.getItem = function(itemId, callback) {
         "use strict";
@@ -279,36 +236,24 @@ function ItemDAO(database) {
          * _id and pass the matching item to the callback function.
          *
          */
-
-        var collection = this.db.collection('item');
-
-        itemId = 1 * itemId || 0;
-
-        collection.findOne({
-            '_id': itemId
-        }).then(function (doc) {
-
+        this.itemsCollection.findOne({
+            _id: itemId
+        }, function(err, doc) {
+            assert.equal(null, err);
             callback(doc);
-
-        }).catch(function (err) {
-
-            console.error(err.stack);
-
         });
     }
-
 
     this.getRelatedItems = function(callback) {
         "use strict";
 
-        this.db.collection("item").find({})
+        this.itemsCollection.find({})
             .limit(4)
             .toArray(function(err, relatedItems) {
                 assert.equal(null, err);
                 callback(relatedItems);
             });
     };
-
 
     this.addReview = function(itemId, comment, name, stars, callback) {
         "use strict";
@@ -324,39 +269,24 @@ function ItemDAO(database) {
          * "name", "comment", "stars", and "date".
          *
          */
+        var reviewDoc = {
+            name: name,
+            comment: comment,
+            stars: stars,
+            date: Date.now()
+        };
 
-        var collection = this.db.collection('item'),
-            reviewDoc = {
-                name: name,
-                comment: comment,
-                stars: stars,
-                date: Date.now()
-            };
-
-        // TODO replace the following two lines with your code that will
-        // update the document with a new review.
-        itemId = 1 * itemId || 0;
-
-        collection.updateOne(
-            {
-                '_id': itemId
-            },
-            {
-                '$push': {
-                    reviews: reviewDoc
-                }
-            }).then(function (doc) {
-
-                callback(doc);
-
-
-            }).catch(function (err) {
-
-                console.error(err.stack);
-
-            });
+        this.itemsCollection.updateOne({
+            _id: itemId
+        }, {
+            $push: {
+                reviews: reviewDoc
+            }
+        }, function(err, doc) {
+            assert.equal(null, err);
+            callback(doc);
+        });
     }
 }
-
 
 module.exports.ItemDAO = ItemDAO;
