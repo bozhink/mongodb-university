@@ -12,10 +12,10 @@ import java.util.Map;
 /**
  * Created by bozhin on 5/28/16.
  */
-public class HelloWorldFreeMarkerStyle {
+public class HelloWorldFreemarkerStyle {
     public static void main(String[] args) {
         Configuration configuration = new Configuration();
-        configuration.setClassForTemplateLoading(HelloWorldFreeMarkerStyle.class, "/");
+        configuration.setClassForTemplateLoading(HelloWorldFreemarkerStyle.class, "/");
 
         try {
             Template helloTemplate = configuration.getTemplate("hello.ftl");
