@@ -13,7 +13,7 @@ public class HelloWorldSparkStyle {
         Spark.get(new Route("/") {
             @Override
             public Object handle(Request request, Response response) {
-                return "Hello World From Spark.";
+                return "Hello World From Spark";
             }
         });
     }
