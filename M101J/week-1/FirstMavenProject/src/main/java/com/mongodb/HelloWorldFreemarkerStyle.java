@@ -6,6 +6,7 @@ import freemarker.template.TemplateException;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class HelloWorldFreemarkerStyle {
             StringWriter stringWriter = new StringWriter();
             Map<String, Object> helloMap = new HashMap<String, Object>();
             helloMap.put("name", "Freemarker");
+            helloMap.put("date", (new Date()).toString());
 
             helloTemplate.process(helloMap, stringWriter);
 
