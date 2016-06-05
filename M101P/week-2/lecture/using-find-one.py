@@ -10,7 +10,9 @@ scores = db.scores
 
 try:
     doc = scores.find_one()
+    print(doc)
+
 except Exception as e:
     print("Unexpected error:", type(e), e)
 
-print(doc)
+

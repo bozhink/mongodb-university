@@ -18,15 +18,15 @@ def find():
     try:
         cursor = scores.find(query)
 
+        sanity = 0
+        for doc in cursor:
+            print(doc)
+            sanity += 1
+            if sanity > 10:
+                break
+
     except Exception as e:
         print('Unexpected error: ', type(e), e)
-
-    sanity = 0
-    for doc in cursor:
-        print(doc)
-        sanity += 1
-        if sanity > 10:
-            break
 
 
 def find_one():
@@ -36,11 +36,11 @@ def find_one():
 
     try:
         doc = scores.find_one(query)
+        print(doc)
 
     except Exception as e:
         print('Unexpected error: ', type(e), e)
 
-    print(doc)
 
 find_one()
 find()
