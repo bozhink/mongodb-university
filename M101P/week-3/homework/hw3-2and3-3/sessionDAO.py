@@ -1,6 +1,3 @@
-__author__ = 'aje'
-
-
 #
 # Copyright (c) 2008 - 2013 10gen, Inc. <http://10gen.com>
 #
@@ -17,9 +14,12 @@ __author__ = 'aje'
 # limitations under the License.
 #
 #
+
 import sys
 import random
 import string
+
+__author__ = 'aje'
 
 
 # The session Data Access Object handles interactions with the sessions collection
@@ -40,7 +40,7 @@ class SessionDAO:
         try:
             self.sessions.insert_one(session)
         except:
-            print("Unexpected error on start_session:", sys.exc_info()[0])
+            print('Unexpected error on start_session: ', sys.exc_info()[0])
             return None
 
         return str(session['_id'])
@@ -75,7 +75,7 @@ class SessionDAO:
             return session['username']
 
     def get_random_str(self, num_chars):
-        random_string = ""
+        random_string = ''
         for i in range(num_chars):
             random_string = random_string + random.choice(string.ascii_letters)
         return random_string

@@ -1,3 +1,5 @@
+
+
 #
 # Copyright (c) 2008 - 2013 10gen, Inc. <http://10gen.com>
 #
@@ -70,6 +72,7 @@ class UserDAO:
 
         # Looks good
         return user
+
 
     # creates a new user in the users collection
     def add_user(self, username, password, email):
